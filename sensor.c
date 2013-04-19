@@ -19,14 +19,8 @@ int main(void) {
 	printf("sensor start\n");
 	
 	while (1) {
-		uint8_t lststate = HIGH;
-		uint8_t counter = 0;
 		uint8_t j = 0;
 		uint8_t i;
-		float farenheit;
-		time_t rawtime;
-		struct tm * timeinfo;
-		char buffer[255];
 		
 		for (i = 0; i < 5; i++) {
 			dht11_val[i]=0;
@@ -39,6 +33,8 @@ int main(void) {
 		delayMicroseconds(40);
 		pinMode(DHT11PIN,INPUT);
 		
+		uint8_t lststate = HIGH;
+		uint8_t counter = 0;
 		for (i = 0; i < MAX_TIME; i++) {
 			counter = 0;
 			while (digitalRead(DHT11PIN) == lststate) {
@@ -64,7 +60,12 @@ int main(void) {
 				j++;
 			}
 		}
+			
 		// verify cheksum and print the verified data
+		float farenheit;
+		time_t rawtime;
+		struct tm* timeinfo;
+		char buffer[255];
 		if ((j >= 40) && (dht11_val[4] == ((dht11_val[0] + dht11_val[1] + dht11_val[2] + dht11_val[3]) & 0xFF))) {
 			farenheit = dht11_val[2] * 9. / 5. + 32;
 			time(&rawtime);
